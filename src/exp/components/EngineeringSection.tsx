@@ -1,5 +1,5 @@
 import React from 'react';
-import RaymarchingBackground from './RaymarchingBackground';
+import MissionShader from './MissionShader';
 
 const EngineeringSection: React.FC = () => {
   return (
@@ -33,7 +33,7 @@ const EngineeringSection: React.FC = () => {
              </div>
              
              {/* Updated typography to match Hero section */}
-             <h2 className="text-4xl md:text-5xl lg:text-7xl text-gray-900 leading-[1.1] tracking-tighter">
+             <h2 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tighter">
                Engineering experiments for <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-red-600 to-purple-600">safety</span> and <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-red-600 to-purple-600">spatial intelligence</span>.
              </h2>
              
@@ -44,7 +44,7 @@ const EngineeringSection: React.FC = () => {
           <div className="w-full lg:pt-32 h-[600px] flex flex-col justify-end">
              <div className="relative w-full h-full border border-gray-900 bg-black rounded-sm overflow-hidden shadow-[20px_20px_0px_rgba(0,0,0,0.05)]">
                  <div className="absolute inset-0 z-10 pointer-events-none border-[0.5px] border-white/10" />
-                 <RaymarchingBackground />
+                 <MissionShader />
              </div>
              <div className="mt-3 flex justify-between items-center font-mono text-xs text-gray-400 tracking-wider">
                 <span>RAYMARCH_ENGINE_V1</span>
