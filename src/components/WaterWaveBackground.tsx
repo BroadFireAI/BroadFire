@@ -17,8 +17,7 @@ uniform float uSmallWavesSpeed;
 uniform float uSmallWavesIterations;
 
 varying float vElevation;
-
-#include <fog_pars_vertex>
+varying float vFogDepth;
 
 // Classic Perlin 3D Noise by Stefan Gustavson
 vec4 permute(vec4 x) { return mod(((x * 34.0) + 1.0) * x, 289.0); }
@@ -119,8 +118,7 @@ void main() {
   gl_Position = projectedPosition;
 
   vElevation = elevation;
-
-  #include <fog_vertex>
+  vFogDepth = -viewPosition.z;
 }
 `;
 
@@ -131,17 +129,22 @@ uniform vec3 uDepthColor;
 uniform vec3 uSurfaceColor;
 uniform float uColorOffset;
 uniform float uColorMultiplier;
+uniform vec3 fogColor;
+uniform float fogNear;
+uniform float fogFar;
 
 varying float vElevation;
-
-#include <fog_pars_fragment>
+varying float vFogDepth;
 
 void main() {
   float mixStrength = (vElevation + uColorOffset) * uColorMultiplier;
   vec3 color = mix(uDepthColor, uSurfaceColor, mixStrength);
-  gl_FragColor = vec4(color, 1.0);
 
-  #include <fog_fragment>
+  // Calculate fog
+  float fogFactor = smoothstep(fogNear, fogFar, vFogDepth);
+  color = mix(color, fogColor, fogFactor);
+
+  gl_FragColor = vec4(color, 1.0);
 }
 `;
 
@@ -194,7 +197,6 @@ const WaterWaveBackground: React.FC<WaterWaveBackgroundProps> = ({ className = '
       vertexShader,
       fragmentShader,
       transparent: true,
-      fog: true,
       uniforms: {
         uTime: { value: 0 },
         uBigWavesElevation: { value: 0.2 },
@@ -208,7 +210,9 @@ const WaterWaveBackground: React.FC<WaterWaveBackgroundProps> = ({ className = '
         uSurfaceColor: { value: new THREE.Color('#4d9aaa') },
         uColorOffset: { value: 0.08 },
         uColorMultiplier: { value: 5 },
-        ...THREE.UniformsLib['fog']
+        fogColor: { value: fogColor },
+        fogNear: { value: 1 },
+        fogFar: { value: 3 }
       }
     });
 
