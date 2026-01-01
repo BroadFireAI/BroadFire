@@ -1,33 +1,25 @@
 import React from 'react';
 import { ArrowRight, Cpu, Network, Zap } from 'lucide-react';
-import WaterWaveBackground from './WaterWaveBackground';
+import FireBackground from './FireBackground';
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative min-h-screen flex items-center bg-transparent pt-20 lg:pt-0 overflow-hidden">
+    <section className="relative min-h-screen flex items-center bg-transparent pt-20 lg:pt-0">
 
       {/*
-        Water Wave Background - Interactive ocean shader covering the background.
-        Positioned to cover the full section with gradient fade on left.
+        Fire Background - Positioned to cover the entire RIGHT side of the screen.
       */}
-      <div className="absolute inset-0 z-0">
-        <WaterWaveBackground className="w-full h-full" />
-        {/* Gradient overlay for text readability on left side */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'linear-gradient(to right, rgba(245, 242, 232, 0.95) 0%, rgba(245, 242, 232, 0.8) 30%, rgba(245, 242, 232, 0.3) 50%, transparent 70%)'
-          }}
-        />
+      <div className="absolute top-0 right-0 w-full lg:w-[55%] h-[90vh] z-0 pointer-events-none mix-blend-multiply">
+           <FireBackground className="w-full h-full" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative">
         {/* Gap between columns */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-32 items-center min-h-[calc(100vh-80px)]">
-          
+
           {/* Left Column: Text Content */}
           <div className="relative flex flex-col items-start text-left z-10 order-2 lg:order-1 pb-12 lg:pb-0">
-            
+
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 shadow-sm mb-8 animate-fade-in-up z-10">
               <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
@@ -56,7 +48,7 @@ const Hero: React.FC = () => {
                   Explore Research <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </button>
-              
+
               <button className="px-8 py-4 bg-white/80 backdrop-blur-md border border-gray-200 text-gray-900 rounded-full font-bold text-lg hover:bg-gray-50 hover:border-gray-300 transition-all w-full sm:w-auto shadow-sm">
                 Read Publications
               </button>

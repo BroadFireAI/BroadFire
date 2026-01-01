@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Home from './components/Home';
 import About from './components/About';
+import WaterWaveBackground from './components/WaterWaveBackground';
 
 function App() {
   return (
@@ -27,15 +28,27 @@ function App() {
             <Route path="/about" element={<About />} />
           </Routes>
 
-          {/* Footer */}
-          <footer className="w-full py-12 border-t border-gray-200 bg-white">
-            <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
-              <p>&copy; 2024 BroadFire Ai. All rights reserved.</p>
-              <div className="flex gap-6 mt-4 md:mt-0">
-                <a href="#" className="hover:text-black transition-colors">Privacy</a>
-                <a href="#" className="hover:text-black transition-colors">Terms</a>
-                <a href="#" className="hover:text-black transition-colors">Twitter</a>
-                <a href="#" className="hover:text-black transition-colors">GitHub</a>
+          {/* Footer with Water Wave Shader Background */}
+          <footer className="relative w-full min-h-[400px] border-t border-gray-200 overflow-hidden">
+            {/* Water Wave Shader Background */}
+            <div className="absolute inset-0 z-0">
+              <WaterWaveBackground />
+            </div>
+
+            {/* Footer Content */}
+            <div className="relative z-10 h-full flex items-end pb-8">
+              <div className="max-w-7xl mx-auto px-4 w-full">
+                <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+                  <div className="flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm">
+                    <p>&copy; 2024 BroadFire Ai. All rights reserved.</p>
+                    <div className="flex gap-6 mt-4 md:mt-0">
+                      <a href="#" className="hover:text-black transition-colors">Privacy</a>
+                      <a href="#" className="hover:text-black transition-colors">Terms</a>
+                      <a href="#" className="hover:text-black transition-colors">Twitter</a>
+                      <a href="#" className="hover:text-black transition-colors">GitHub</a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </footer>
