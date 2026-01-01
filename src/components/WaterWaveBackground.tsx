@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 interface WaterWaveBackgroundProps {
   className?: string;
@@ -14,10 +15,10 @@ uniform float uSmallWavesElevation;
 uniform float uSmallWavesFrequency;
 uniform float uSmallWavesSpeed;
 uniform float uSmallWavesIterations;
-uniform vec2 uMouse;
 
 varying float vElevation;
-varying vec3 vPosition;
+
+#include <fog_pars_vertex>
 
 // Classic Perlin 3D Noise by Stefan Gustavson
 vec4 permute(vec4 x) { return mod(((x * 34.0) + 1.0) * x, 289.0); }
@@ -95,16 +96,10 @@ float cnoise(vec3 P) {
 void main() {
   vec4 modelPosition = modelMatrix * vec4(position, 1.0);
 
-  // Mouse influence on waves
-  float mouseInfluence = 1.0 - smoothstep(0.0, 3.0, length(modelPosition.xz - uMouse * 6.0 - 3.0));
-
   float elevation =
     sin(modelPosition.x * uBigWavesFrequency.x + uTime * uBigWaveSpeed)
     * sin(modelPosition.z * uBigWavesFrequency.y + uTime * uBigWaveSpeed)
     * uBigWavesElevation;
-
-  // Add mouse-reactive ripples
-  elevation += mouseInfluence * sin(length(modelPosition.xz - uMouse * 6.0 - 3.0) * 4.0 - uTime * 3.0) * 0.15;
 
   for(float i = 1.0; i <= 10.0; i++) {
     elevation -= abs(
@@ -124,7 +119,8 @@ void main() {
   gl_Position = projectedPosition;
 
   vElevation = elevation;
-  vPosition = modelPosition.xyz;
+
+  #include <fog_vertex>
 }
 `;
 
@@ -135,34 +131,22 @@ uniform vec3 uDepthColor;
 uniform vec3 uSurfaceColor;
 uniform float uColorOffset;
 uniform float uColorMultiplier;
-uniform float uTime;
-uniform vec3 uFogColor;
-uniform float uFogNear;
-uniform float uFogFar;
 
 varying float vElevation;
-varying vec3 vPosition;
+
+#include <fog_pars_fragment>
 
 void main() {
   float mixStrength = (vElevation + uColorOffset) * uColorMultiplier;
   vec3 color = mix(uDepthColor, uSurfaceColor, mixStrength);
+  gl_FragColor = vec4(color, 1.0);
 
-  // Add subtle shimmer effect
-  float shimmer = sin(vPosition.x * 10.0 + uTime * 2.0) * sin(vPosition.z * 10.0 + uTime * 1.5) * 0.05;
-  color += shimmer;
-
-  // Fog effect
-  float depth = gl_FragCoord.z / gl_FragCoord.w;
-  float fogFactor = smoothstep(uFogNear, uFogFar, depth);
-  color = mix(color, uFogColor, fogFactor * 0.3);
-
-  gl_FragColor = vec4(color, 0.9);
+  #include <fog_fragment>
 }
 `;
 
 const WaterWaveBackground: React.FC<WaterWaveBackgroundProps> = ({ className = '' }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mouseRef = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 });
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -175,34 +159,44 @@ const WaterWaveBackground: React.FC<WaterWaveBackgroundProps> = ({ className = '
     const scene = new THREE.Scene();
     const fogColor = new THREE.Color('#8e99a2');
     scene.fog = new THREE.Fog(fogColor, 1, 3);
-    scene.background = new THREE.Color('#8e99a2');
+    scene.background = fogColor;
 
     // Camera
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 100);
-    camera.position.set(1.5, 1.2, 1.5);
-    camera.lookAt(0, 0, 0);
+    camera.position.set(1, 1, 1);
+    scene.add(camera);
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
-      alpha: true,
       powerPreference: 'high-performance'
     });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
+    // OrbitControls for mouse interaction
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.enableZoom = true;
+    controls.enablePan = false;
+    controls.minDistance = 0.5;
+    controls.maxDistance = 5;
+    controls.minPolarAngle = 0.2;
+    controls.maxPolarAngle = Math.PI / 2 - 0.1;
+
     // Water geometry
     const waterGeometry = new THREE.PlaneGeometry(12, 12, 512, 512);
 
-    // Water material
+    // Water material with fog uniforms
     const waterMaterial = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
       transparent: true,
+      fog: true,
       uniforms: {
         uTime: { value: 0 },
-        uMouse: { value: new THREE.Vector2(0.5, 0.5) },
         uBigWavesElevation: { value: 0.2 },
         uBigWavesFrequency: { value: new THREE.Vector2(4, 2) },
         uBigWaveSpeed: { value: 0.75 },
@@ -214,9 +208,7 @@ const WaterWaveBackground: React.FC<WaterWaveBackgroundProps> = ({ className = '
         uSurfaceColor: { value: new THREE.Color('#4d9aaa') },
         uColorOffset: { value: 0.08 },
         uColorMultiplier: { value: 5 },
-        uFogColor: { value: fogColor },
-        uFogNear: { value: 1 },
-        uFogFar: { value: 3 }
+        ...THREE.UniformsLib['fog']
       }
     });
 
@@ -228,41 +220,20 @@ const WaterWaveBackground: React.FC<WaterWaveBackgroundProps> = ({ className = '
     const clock = new THREE.Clock();
     let animationId: number;
 
-    // Camera orbit state
-    let cameraAngle = 0;
-
     const animate = () => {
       animationId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
-      // Smooth mouse interpolation
-      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
-      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
+      // Update controls
+      controls.update();
 
-      // Update uniforms
+      // Update time uniform
       waterMaterial.uniforms.uTime.value = elapsedTime;
-      waterMaterial.uniforms.uMouse.value.set(mouseRef.current.x, mouseRef.current.y);
-
-      // Gentle camera movement based on mouse
-      cameraAngle = mouseRef.current.x * 0.5 - 0.25;
-      camera.position.x = Math.sin(cameraAngle) * 2.5 + 0.5;
-      camera.position.z = Math.cos(cameraAngle) * 2.5 + 0.5;
-      camera.position.y = 1.0 + mouseRef.current.y * 0.3;
-      camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
     };
 
     animate();
-
-    // Window-level mouse handler for global tracking
-    const handleMouseMove = (event: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width;
-      const y = 1 - (event.clientY - rect.top) / rect.height;
-      mouseRef.current.targetX = Math.max(0, Math.min(1, x));
-      mouseRef.current.targetY = Math.max(0, Math.min(1, y));
-    };
 
     // Resize handler
     const handleResize = () => {
@@ -273,15 +244,14 @@ const WaterWaveBackground: React.FC<WaterWaveBackgroundProps> = ({ className = '
       renderer.setSize(newWidth, newHeight);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
 
     // Cleanup
     return () => {
       cancelAnimationFrame(animationId);
-      window.removeEventListener('mousemove', handleMouseMove);
       resizeObserver.disconnect();
+      controls.dispose();
       renderer.dispose();
       waterGeometry.dispose();
       waterMaterial.dispose();
@@ -295,7 +265,7 @@ const WaterWaveBackground: React.FC<WaterWaveBackgroundProps> = ({ className = '
     <div
       ref={containerRef}
       className={`absolute inset-0 ${className}`}
-      style={{ pointerEvents: 'none' }}
+      style={{ cursor: 'grab' }}
     />
   );
 };

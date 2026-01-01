@@ -29,16 +29,16 @@ function App() {
           </Routes>
 
           {/* Footer with Water Wave Shader Background */}
-          <footer className="relative w-full min-h-[400px] border-t border-gray-200 overflow-hidden">
-            {/* Water Wave Shader Background */}
+          <footer className="relative w-full min-h-[500px] border-t border-gray-200 overflow-hidden">
+            {/* Water Wave Shader Background - Interactive */}
             <div className="absolute inset-0 z-0">
               <WaterWaveBackground />
             </div>
 
-            {/* Footer Content */}
-            <div className="relative z-10 h-full flex items-end pb-8">
+            {/* Footer Content - Positioned at bottom, pointer-events-none to allow shader interaction */}
+            <div className="absolute bottom-0 left-0 right-0 z-10 pb-8 pointer-events-none">
               <div className="max-w-7xl mx-auto px-4 w-full">
-                <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+                <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg pointer-events-auto">
                   <div className="flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm">
                     <p>&copy; 2024 BroadFire Ai. All rights reserved.</p>
                     <div className="flex gap-6 mt-4 md:mt-0">
