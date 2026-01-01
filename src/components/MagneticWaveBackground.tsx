@@ -95,15 +95,15 @@ void main() {
     float mouseGlow = exp(-dist * 8.0) * (0.8 + spiral * 0.2);
     color += vec3(1.0) * mouseGlow;
     color = pow(color, vec3(0.9));
-    // Reduce opacity for background effect
-    float alpha = 0.7;
-    gl_FragColor = vec4(color * 0.6, alpha);
+    float alpha = 0.85;
+    gl_FragColor = vec4(color * 0.7, alpha);
 }
 `;
 
 const MagneticWaveBackground: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 });
+  const materialRef = useRef<THREE.ShaderMaterial | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -139,8 +139,8 @@ const MagneticWaveBackground: React.FC = () => {
       0.85
     );
     bloomPass.threshold = 0.1;
-    bloomPass.strength = 1.2;
-    bloomPass.radius = 0.6;
+    bloomPass.strength = 1.5;
+    bloomPass.radius = 0.7;
     composer.addPass(bloomPass);
 
     // Shader material
@@ -155,6 +155,7 @@ const MagneticWaveBackground: React.FC = () => {
       },
       transparent: true
     });
+    materialRef.current = material;
 
     const plane = new THREE.Mesh(geometry, material);
     scene.add(plane);
@@ -167,9 +168,9 @@ const MagneticWaveBackground: React.FC = () => {
       animationId = requestAnimationFrame(animate);
       const time = clock.getElapsedTime();
 
-      // Smooth mouse interpolation
-      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.1;
-      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.1;
+      // Smooth mouse interpolation with easing
+      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.08;
+      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.08;
 
       material.uniforms.time.value = time;
       material.uniforms.mouse.value.set(mouseRef.current.x, mouseRef.current.y);
@@ -179,11 +180,16 @@ const MagneticWaveBackground: React.FC = () => {
 
     animate();
 
-    // Mouse handler
+    // Window-level mouse handler for global tracking
     const handleMouseMove = (event: MouseEvent) => {
       const rect = container.getBoundingClientRect();
-      mouseRef.current.targetX = (event.clientX - rect.left) / rect.width;
-      mouseRef.current.targetY = 1 - (event.clientY - rect.top) / rect.height;
+      // Calculate mouse position relative to the container, even when mouse is outside
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = 1 - (event.clientY - rect.top) / rect.height;
+
+      // Clamp values but allow some overflow for edge effects
+      mouseRef.current.targetX = Math.max(-0.5, Math.min(1.5, x));
+      mouseRef.current.targetY = Math.max(-0.5, Math.min(1.5, y));
     };
 
     // Resize handler
@@ -195,19 +201,21 @@ const MagneticWaveBackground: React.FC = () => {
       material.uniforms.resolution.value.set(newWidth, newHeight);
     };
 
-    container.addEventListener('mousemove', handleMouseMove);
+    // Use window-level event listener for mouse tracking
+    window.addEventListener('mousemove', handleMouseMove);
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
 
     // Cleanup
     return () => {
       cancelAnimationFrame(animationId);
-      container.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousemove', handleMouseMove);
       resizeObserver.disconnect();
       renderer.dispose();
       geometry.dispose();
       material.dispose();
       composer.dispose();
+      materialRef.current = null;
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
@@ -217,8 +225,8 @@ const MagneticWaveBackground: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 z-0"
-      style={{ pointerEvents: 'auto' }}
+      className="absolute inset-0"
+      style={{ pointerEvents: 'none' }}
     />
   );
 };
