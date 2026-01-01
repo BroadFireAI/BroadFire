@@ -1,127 +1,346 @@
-import React from 'react';
-import { Brain, Cpu, Network } from 'lucide-react';
+import React, { useState } from 'react';
+import { ExternalLink, Github, Linkedin, Mail, Award, Code, GraduationCap } from 'lucide-react';
 import profileImage from '../assets/profile.png';
+import OptimizedImage from './OptimizedImage';
+import Interactive3DSpheres from './Interactive3DSpheres';
+import SphereModal from './SphereModal';
+
+interface SphereData {
+  id: string;
+  title: string;
+  description: string;
+  color: [number, number, number];
+  position: [number, number, number];
+  details?: string[];
+  links?: { label: string; url: string }[];
+}
+
+const researchSpheres: SphereData[] = [
+  {
+    id: 'spatial',
+    title: 'Spatial Intelligence',
+    description: 'Exploring the intersection of physical space and artificial intelligence, focusing on how AI perceives, understands, and interacts with 3D environments.',
+    color: [1.0, 0.4, 0.2],
+    position: [-3.2, 0, 0],
+    details: [
+      'GPU-accelerated medical imaging visualization',
+      'MedEye3d.jl: 3D segmentation toolkit',
+      'Cryo-ET particle picking and segmentation',
+      'ModernGL.jl and CUDA.jl implementations'
+    ]
+  },
+  {
+    id: 'interpretability',
+    title: 'Mechanistic Interpretability',
+    description: 'Reverse engineering neural networks to understand the internal algorithms and representations that drive model behavior and decision-making.',
+    color: [0.6, 0.3, 1.0],
+    position: [0, 0, 0],
+    details: [
+      'Understanding transformer architectures',
+      'Feature visualization and attribution',
+      'Circuit analysis in deep networks',
+      'Interpretable AI for medical diagnostics'
+    ]
+  },
+  {
+    id: 'hpc',
+    title: 'Optimization and HPC',
+    description: 'Leveraging High Performance Computing for large-scale scientific simulations and optimizing algorithms for maximum computational efficiency.',
+    color: [0.2, 0.8, 0.6],
+    position: [3.2, 0, 0],
+    details: [
+      'SciMLOperators.jl development',
+      'DataInterpolations.jl contributions',
+      'HepMC3.jl: CERN library Julia port',
+      'GPU kernel optimization with CUDA.jl'
+    ],
+    links: [
+      { label: 'SciML', url: 'https://sciml.ai' }
+    ]
+  }
+];
+
+const highlights = [
+  {
+    icon: Award,
+    title: 'Google Summer of Code',
+    subtitle: '2024 & 2025 Fellow',
+    description: 'MedEye3d.jl medical imaging visualization and MedVoxelHD supervoxel segmentation'
+  },
+  {
+    icon: Code,
+    title: 'Princeton University',
+    subtitle: 'Research Software Engineer',
+    description: 'HepMC3.jl development for high-energy physics Monte Carlo events'
+  },
+  {
+    icon: GraduationCap,
+    title: 'JuliaHealth',
+    subtitle: 'Community Manager',
+    description: 'Leading open science research community for medical imaging packages'
+  }
+];
 
 const About: React.FC = () => {
-    return (
-        <div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            {/* Highlights Section */}
-            <section className="mb-20">
-                <h1 className="text-4xl font-bold text-gray-900 mb-8">About Me</h1>
-                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                    <div className="flex flex-col lg:flex-row gap-12">
-                        {/* Image Column */}
-                        <div className="lg:w-1/3 flex-shrink-0">
-                            <div className="relative group">
-                                <div className="absolute -inset-1 bg-gradient-to-r from-orange-600 to-red-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                                <img
-                                    src={profileImage}
-                                    alt="Divyansh Goyal"
-                                    className="relative w-full rounded-xl shadow-lg object-cover aspect-[3/4]"
-                                />
-                            </div>
-                        </div>
+  const [selectedSphere, setSelectedSphere] = useState<SphereData | null>(null);
 
-                        {/* Content Column */}
-                        <div className="lg:w-2/3 prose prose-lg max-w-none text-gray-600 space-y-6">
-                            <p className="font-semibold text-gray-900">
-                                November 14, 2025<br />
-                                Pumas AI
-                            </p>
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-[#F5F2E8] to-white">
+      {/* Hero Section */}
+      <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-5 gap-12 items-start">
+            {/* Profile Image Column */}
+            <div className="lg:col-span-2">
+              <div className="sticky top-24">
+                <div className="relative group">
+                  {/* Decorative background elements */}
+                  <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/20 via-purple-500/20 to-teal-500/20 rounded-3xl blur-2xl opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                  <div className="absolute -inset-1 bg-gradient-to-r from-orange-600 to-red-600 rounded-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-300" />
 
-                            <p>
-                                Hello,
-                            </p>
-
-                            <p>
-                                I am an undergraduate scientific computing research engineer (Princeton University) and the Community Manager for the open science research community, JuliaHealth. In particular, over the last 2 years, I have been a Google Summer of Code fellow hacking together and building a GPU Accelerated medical imaging visualization and segmentation toolkit (using ModernGL.jl and CUDA.jl) as well as an advanced supervoxel segmentation algorithm based on Kolmogorov and Recurrent Neural Networks.
-                            </p>
-
-                            <div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-3">Highlights:</h3>
-                                <ul className="list-disc pl-5 space-y-2">
-                                    <li>Google summer of code-2024, Medical imaging visualization and segmentation MedEye3d.jl</li>
-                                    <li>Google Summer of Code-2025, Digital Twin based approach for advanced supervoxel segmentation MedVoxelHD, SuperVoxel Algorithms, MedImages</li>
-                                    <li>Princeton Research software engineer for HepMC3.jl</li>
-                                    <li>Gave talks at JuliaHEP 2025, Juliacon Local Paris under various grants.</li>
-                                    <li>SciML Developer Grants for Linear Operators and Statistical packages.</li>
-                                </ul>
-                            </div>
-
-                            <p>
-                                I have relatively steep inclination towards machine learning and have acquired extensive knowledge of such routines over 3 primary domains namely, Cellular imaging (Particle picking and segmentation in Cryo-ET datasets), High-Energy Physics (Diffusion models for detector simulation) and AI agents with Camel-AI open source framework for orchestration of communicative AI agents.
-                            </p>
-
-                            <p>
-                                Being an active contributor to the Julia programming language's sub-ecosystem of medical-imaging packages under the JuliaHealth organisation, I have contributed immensely towards the development of packages such as the likes of an imaging and visualization tool namely (MedEye3d.jl) under Google-Summer-of-Code 2024 and 2025. Extending community contributions further, I led the development of other supporting packages such as MedImages.jl (Medical imaging data-analysis), ITKIOWrapper.jl and ITK_jll.jl (Wrapper packages providing image registrations functions from the Insight Toolkit C++ library) involving various routines for medical imaging data analysis and manipulation commonly within the NIFTI AND DICOM file formats.
-                            </p>
-
-                            <p>
-                                Further as a research software engineer at Princeton, the development of HepMC3.jl, a wrapper package involving the port of HepMC3 (High energy physics monte-carlo events) C++ library by CERN to Julia as a project was accepted and presented at the 2025 JuliaHEP conference.
-                            </p>
-
-                            <p>
-                                I currently contribute to the SciML, scientific machine learning packages as an intern in Julia primarily the Linear Algebra operators package, such as SciMLOperators.jl and statistical packages such as DataInterpolations.jl.
-                            </p>
-
-                            <p>
-                                Being an ongoing Beta Microsoft Learn Student ambassador, I constantly interact with the State-of-the-art LLMs and host workshops around using Azure for building complete AI solutions and running experiments on GPUs via jupyter notebooks. Further my involvement also as an ambassador within the Camel-AI community, I contribute to cookbooks for using and interacting with the Camel-AI agent framework, utilizing various LLM backends. Eg: an ongoing cookbook example issue assigned to me for completion by camel-AI development team.
-                            </p>
-
-                            <p>
-                                Embarking on an endeavor as such will allow me to expand my horizons even further within the landscape of foundation models of biology, pharmacology and other overlapping areas, and the current innovative drug simulation techniques.
-                            </p>
-
-                            <p className="mt-8">
-                                Sincerely,<br />
-                                <span className="font-semibold text-gray-900">Divyansh Goyal</span><br />
-                                New Delhi, India
-                            </p>
-                        </div>
-                    </div>
+                  <OptimizedImage
+                    src={profileImage}
+                    alt="Divyansh Goyal"
+                    className="relative rounded-2xl shadow-xl aspect-[3/4] w-full"
+                    placeholderColor="#e8e0d0"
+                  />
                 </div>
-            </section>
 
-            {/* Research Domains Section */}
-            <section>
-                <h2 className="text-3xl font-bold text-gray-900 mb-8">Experiments, Products & Research</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Spatial Intelligence */}
-                    <div className="group p-6 bg-white rounded-xl border border-gray-200 hover:border-orange-500/50 hover:shadow-lg transition-all duration-300">
-                        <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-orange-100 transition-colors">
-                            <Network className="w-6 h-6 text-orange-600" />
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">Spatial Intelligence</h3>
-                        <p className="text-gray-600">
-                            Exploring the intersection of physical space and artificial intelligence, focusing on how AI perceives and interacts with 3D environments.
-                        </p>
-                    </div>
-
-                    {/* Mechanistic Interpretability */}
-                    <div className="group p-6 bg-white rounded-xl border border-gray-200 hover:border-orange-500/50 hover:shadow-lg transition-all duration-300">
-                        <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-orange-100 transition-colors">
-                            <Brain className="w-6 h-6 text-orange-600" />
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">Mechanistic Interpretability</h3>
-                        <p className="text-gray-600">
-                            Reverse engineering neural networks to understand the internal algorithms and representations that drive model behavior.
-                        </p>
-                    </div>
-
-                    {/* Optimization and HPC */}
-                    <div className="group p-6 bg-white rounded-xl border border-gray-200 hover:border-orange-500/50 hover:shadow-lg transition-all duration-300">
-                        <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-orange-100 transition-colors">
-                            <Cpu className="w-6 h-6 text-orange-600" />
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">Optimization and HPC</h3>
-                        <p className="text-gray-600">
-                            Leveraging High Performance Computing for large-scale scientific simulations and optimizing algorithms for maximum efficiency.
-                        </p>
-                    </div>
+                {/* Contact Links */}
+                <div className="mt-8 flex gap-4 justify-center">
+                  <a
+                    href="mailto:contact@broadfire.ai"
+                    className="p-3 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-orange-200 transition-all duration-200 group"
+                    aria-label="Email"
+                  >
+                    <Mail className="w-5 h-5 text-gray-600 group-hover:text-orange-600" />
+                  </a>
+                  <a
+                    href="https://github.com"
+                    className="p-3 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-orange-200 transition-all duration-200 group"
+                    aria-label="GitHub"
+                  >
+                    <Github className="w-5 h-5 text-gray-600 group-hover:text-orange-600" />
+                  </a>
+                  <a
+                    href="https://linkedin.com"
+                    className="p-3 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-orange-200 transition-all duration-200 group"
+                    aria-label="LinkedIn"
+                  >
+                    <Linkedin className="w-5 h-5 text-gray-600 group-hover:text-orange-600" />
+                  </a>
                 </div>
-            </section>
+              </div>
+            </div>
+
+            {/* Content Column */}
+            <div className="lg:col-span-3 space-y-8">
+              {/* Name and Title */}
+              <div>
+                <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+                  Divyansh Goyal
+                </h1>
+                <p className="text-xl text-gray-600 mb-2">
+                  Scientific Computing Research Engineer
+                </p>
+                <p className="text-lg text-orange-600 font-medium">
+                  Princeton University / JuliaHealth Community Manager
+                </p>
+              </div>
+
+              {/* Bio */}
+              <div className="prose prose-lg max-w-none text-gray-600">
+                <p className="text-lg leading-relaxed">
+                  Building the future of computational biology and medical imaging through
+                  GPU-accelerated visualization, advanced segmentation algorithms, and
+                  high-performance scientific computing.
+                </p>
+                <p className="leading-relaxed">
+                  As a Google Summer of Code fellow and core contributor to JuliaHealth,
+                  I develop tools that bridge the gap between cutting-edge research and
+                  practical medical applications: from 3D visualization toolkits to
+                  supervoxel segmentation systems powered by Kolmogorov networks.
+                </p>
+              </div>
+
+              {/* Highlight Cards */}
+              <div className="grid sm:grid-cols-3 gap-4">
+                {highlights.map((item, index) => (
+                  <div
+                    key={index}
+                    className="p-5 bg-white rounded-xl border border-gray-100 hover:border-orange-200 hover:shadow-lg transition-all duration-300 group"
+                  >
+                    <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-200">
+                      <item.icon className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="font-bold text-gray-900 text-sm">{item.title}</h3>
+                    <p className="text-orange-600 text-sm font-medium mb-2">{item.subtitle}</p>
+                    <p className="text-gray-500 text-xs leading-relaxed">{item.description}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Contributions List */}
+              <div className="bg-white rounded-2xl p-6 border border-gray-100">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Key Contributions</h3>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {[
+                    'MedEye3d.jl: GPU-accelerated visualization',
+                    'MedVoxelHD: Supervoxel segmentation',
+                    'HepMC3.jl: High-energy physics tools',
+                    'ITKIOWrapper.jl: Medical imaging I/O',
+                    'SciMLOperators.jl: Linear algebra ops',
+                    'DataInterpolations.jl: Statistical tools'
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-3 text-sm text-gray-600 py-2 px-3 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="w-1.5 h-1.5 bg-orange-500 rounded-full flex-shrink-0" />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    );
+      </section>
+
+      {/* Research Domains Section with 3D Spheres */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900 relative overflow-hidden">
+        {/* Subtle background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-gray-900 to-black" />
+
+        <div className="max-w-6xl mx-auto relative">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+              Research Domains
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Click on the spheres to explore each research area in depth
+            </p>
+          </div>
+
+          {/* 3D Spheres Container */}
+          <div className="h-[400px] lg:h-[500px] relative">
+            <Interactive3DSpheres
+              spheres={researchSpheres}
+              onSphereClick={(sphere) => setSelectedSphere(sphere)}
+            />
+
+            {/* Sphere Labels (positioned below spheres) */}
+            <div className="absolute bottom-0 left-0 right-0 flex justify-around px-4">
+              {researchSpheres.map((sphere) => (
+                <div
+                  key={sphere.id}
+                  className="text-center cursor-pointer group"
+                  onClick={() => setSelectedSphere(sphere)}
+                >
+                  <h3 className="text-white font-semibold text-sm lg:text-base group-hover:text-orange-400 transition-colors">
+                    {sphere.title}
+                  </h3>
+                  <p className="text-gray-500 text-xs mt-1 hidden sm:block">Click to explore</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Experience Timeline */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Experience</h2>
+
+          <div className="space-y-8">
+            {[
+              {
+                period: '2024 - Present',
+                role: 'Research Software Engineer',
+                org: 'Princeton University',
+                description: 'Development of HepMC3.jl wrapper for high-energy physics Monte Carlo events. Presented at JuliaHEP 2025 conference.'
+              },
+              {
+                period: '2024 - 2025',
+                role: 'Google Summer of Code Fellow',
+                org: 'JuliaHealth',
+                description: 'Built GPU-accelerated medical imaging visualization (MedEye3d.jl) and advanced supervoxel segmentation algorithms (MedVoxelHD).'
+              },
+              {
+                period: '2023 - Present',
+                role: 'Community Manager',
+                org: 'JuliaHealth',
+                description: 'Leading open science research community. Contributing to MedImages.jl, ITKIOWrapper.jl, and ITK_jll.jl for medical imaging analysis.'
+              },
+              {
+                period: '2024 - Present',
+                role: 'SciML Developer',
+                org: 'Julia SciML',
+                description: 'Developer grants for Linear Operators (SciMLOperators.jl) and statistical packages (DataInterpolations.jl).'
+              }
+            ].map((item, index) => (
+              <div key={index} className="flex gap-6 group">
+                <div className="flex flex-col items-center">
+                  <div className="w-3 h-3 bg-orange-500 rounded-full group-hover:scale-125 transition-transform" />
+                  {index < 3 && <div className="w-0.5 h-full bg-gray-200 mt-2" />}
+                </div>
+                <div className="pb-8">
+                  <span className="text-sm text-orange-600 font-medium">{item.period}</span>
+                  <h3 className="text-lg font-bold text-gray-900 mt-1">{item.role}</h3>
+                  <p className="text-gray-600 font-medium">{item.org}</p>
+                  <p className="text-gray-500 mt-2 text-sm leading-relaxed">{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Modal for sphere details */}
+      {selectedSphere && (
+        <SphereModal
+          isOpen={!!selectedSphere}
+          onClose={() => setSelectedSphere(null)}
+          title={selectedSphere.title}
+          description={selectedSphere.description}
+          color={selectedSphere.color}
+        >
+          {selectedSphere.details && (
+            <div className="space-y-3">
+              <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+                Focus Areas
+              </h4>
+              <ul className="space-y-2">
+                {selectedSphere.details.map((detail, index) => (
+                  <li key={index} className="flex items-center gap-3 text-gray-600 text-sm">
+                    <div className="w-1.5 h-1.5 bg-orange-500 rounded-full" />
+                    {detail}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {selectedSphere.links && (
+            <div className="mt-6 flex gap-3">
+              {selectedSphere.links.map((link, index) => (
+                <a
+                  key={index}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+                >
+                  {link.label}
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
+          )}
+        </SphereModal>
+      )}
+    </div>
+  );
 };
 
 export default About;
