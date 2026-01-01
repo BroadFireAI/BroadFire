@@ -1,16 +1,24 @@
 import React from 'react';
 import { ArrowRight, Cpu, Network, Zap } from 'lucide-react';
-import FireBackground from './FireBackground';
+import WaterWaveBackground from './WaterWaveBackground';
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative min-h-screen flex items-center bg-transparent pt-20 lg:pt-0">
-      
-      {/* 
-        Fire Background - Positioned to cover the entire RIGHT side of the screen.
+    <section className="relative min-h-screen flex items-center bg-transparent pt-20 lg:pt-0 overflow-hidden">
+
+      {/*
+        Water Wave Background - Interactive ocean shader covering the background.
+        Positioned to cover the full section with gradient fade on left.
       */}
-      <div className="absolute top-0 right-0 w-full lg:w-[55%] h-[90vh] z-0 pointer-events-none mix-blend-multiply">
-           <FireBackground className="w-full h-full" />
+      <div className="absolute inset-0 z-0">
+        <WaterWaveBackground className="w-full h-full" />
+        {/* Gradient overlay for text readability on left side */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'linear-gradient(to right, rgba(245, 242, 232, 0.95) 0%, rgba(245, 242, 232, 0.8) 30%, rgba(245, 242, 232, 0.3) 50%, transparent 70%)'
+          }}
+        />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative">
