@@ -4,6 +4,7 @@ import profileImage from '../assets/profile.png';
 import OptimizedImage from './OptimizedImage';
 import Interactive3DSpheres from './Interactive3DSpheres';
 import SphereModal from './SphereModal';
+import MagneticWaveBackground from './MagneticWaveBackground';
 
 interface SphereData {
   id: string;
@@ -209,10 +210,14 @@ const About: React.FC = () => {
 
       {/* Research Domains Section with 3D Spheres */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900 relative overflow-hidden">
-        {/* Subtle background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-gray-900 to-black" />
+        {/* Magnetic wave distortion background shader */}
+        <div className="absolute inset-0 z-0">
+          <MagneticWaveBackground />
+        </div>
+        {/* Dark overlay to ensure text readability */}
+        <div className="absolute inset-0 bg-gray-900/40 z-[1]" />
 
-        <div className="max-w-6xl mx-auto relative">
+        <div className="max-w-6xl mx-auto relative z-[2]">
           <div className="text-center mb-12">
             <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
               Research Domains
