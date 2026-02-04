@@ -75,10 +75,10 @@ void main() {
     float turbulence = fbm(distortedUv * 2.0 + vec2(time * 0.5));
     float pattern = sin(angle * 3.5 - time * 2.5);
     pattern = pattern * turbulence;
-    vec3 color1 = vec3(0.0, 0.4, 1.0);
-    vec3 color2 = vec3(0.8, 0.0, 1.0);
-    vec3 color3 = vec3(0.0, 1.0, 0.5);
-    vec3 color4 = vec3(1.0, 0.5, 0.0);
+    vec3 color1 = vec3(0.15, 0.25, 0.9);
+    vec3 color2 = vec3(0.4, 0.5, 0.95);
+    vec3 color3 = vec3(0.6, 0.7, 1.0);
+    vec3 color4 = vec3(0.2, 0.3, 0.8);
     vec3 color = vec3(0.0);
     if(pattern < -0.33) {
         color = mix(color1, color2, (pattern + 1.0) / 0.67);
@@ -121,7 +121,7 @@ const MagneticWaveBackground: React.FC = () => {
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
-      powerPreference: 'high-performance'
+      powerPreference: 'high-performance',
     });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -133,12 +133,7 @@ const MagneticWaveBackground: React.FC = () => {
     const renderPass = new RenderPass(scene, camera);
     composer.addPass(renderPass);
 
-    const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(width, height),
-      1.5,
-      0.5,
-      0.85
-    );
+    const bloomPass = new UnrealBloomPass(new THREE.Vector2(width, height), 1.5, 0.5, 0.85);
     bloomPass.threshold = 0.1;
     bloomPass.strength = 1.2;
     bloomPass.radius = 0.6;
@@ -152,9 +147,9 @@ const MagneticWaveBackground: React.FC = () => {
       uniforms: {
         time: { value: 0 },
         resolution: { value: new THREE.Vector2(width, height) },
-        mouse: { value: new THREE.Vector2(0.5, 0.5) }
+        mouse: { value: new THREE.Vector2(0.5, 0.5) },
       },
-      transparent: true
+      transparent: true,
     });
     materialRef.current = material;
 
@@ -223,13 +218,7 @@ const MagneticWaveBackground: React.FC = () => {
     };
   }, []);
 
-  return (
-    <div
-      ref={containerRef}
-      className="absolute inset-0"
-      style={{ pointerEvents: 'none' }}
-    />
-  );
+  return <div ref={containerRef} className="absolute inset-0" style={{ pointerEvents: 'none' }} />;
 };
 
 export default MagneticWaveBackground;

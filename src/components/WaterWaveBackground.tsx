@@ -160,7 +160,7 @@ const WaterWaveBackground: React.FC<WaterWaveBackgroundProps> = ({ className = '
 
     // Scene
     const scene = new THREE.Scene();
-    const fogColor = new THREE.Color('#8e99a2');
+    const fogColor = new THREE.Color('#F0F4F8');
     scene.fog = new THREE.Fog(fogColor, 1, 3);
     scene.background = fogColor;
 
@@ -172,7 +172,7 @@ const WaterWaveBackground: React.FC<WaterWaveBackgroundProps> = ({ className = '
     // Renderer
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
-      powerPreference: 'high-performance'
+      powerPreference: 'high-performance',
     });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -206,14 +206,14 @@ const WaterWaveBackground: React.FC<WaterWaveBackgroundProps> = ({ className = '
         uSmallWavesFrequency: { value: 3 },
         uSmallWavesSpeed: { value: 0.2 },
         uSmallWavesIterations: { value: 4 },
-        uDepthColor: { value: new THREE.Color('#1e4d40') },
-        uSurfaceColor: { value: new THREE.Color('#4d9aaa') },
+        uDepthColor: { value: new THREE.Color('#1E40AF') },
+        uSurfaceColor: { value: new THREE.Color('#60A5FA') },
         uColorOffset: { value: 0.08 },
         uColorMultiplier: { value: 5 },
         fogColor: { value: fogColor },
         fogNear: { value: 1 },
-        fogFar: { value: 3 }
-      }
+        fogFar: { value: 3 },
+      },
     });
 
     const water = new THREE.Mesh(waterGeometry, waterMaterial);

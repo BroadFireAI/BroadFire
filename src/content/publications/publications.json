@@ -1,0 +1,70 @@
+{
+  "publications": [
+    {
+      "id": "1",
+      "title": "Scaling Laws for Multimodal Reasoning in Vision-Language Models",
+      "authors": ["A. Research", "B. Collaborator", "C. Team"],
+      "venue": "NeurIPS 2025",
+      "year": 2025,
+      "area": "multimodal-llms",
+      "abstract": "We investigate how reasoning capabilities in vision-language models scale with compute, data, and model size. Our findings reveal distinct scaling behaviors for different types of multimodal reasoning tasks.",
+      "arxivUrl": "https://arxiv.org/abs/example",
+      "codeUrl": "https://github.com/broadfire/example"
+    },
+    {
+      "id": "2",
+      "title": "Circuit Discovery in Large Language Models via Automated Interpretability",
+      "authors": ["D. Researcher", "E. Scientist"],
+      "venue": "ICML 2025",
+      "year": 2025,
+      "area": "interpretability",
+      "abstract": "We present a novel approach to automatically discover circuits in large language models using gradient-based attribution and causal intervention methods.",
+      "arxivUrl": "https://arxiv.org/abs/example",
+      "pdfUrl": "https://example.com/paper.pdf"
+    },
+    {
+      "id": "3",
+      "title": "Neural-Symbolic Integration for Scientific Hypothesis Generation",
+      "authors": ["F. Author", "G. Writer", "H. Contributor"],
+      "venue": "ICLR 2025",
+      "year": 2025,
+      "area": "neurosymbolic",
+      "abstract": "We develop a hybrid system that combines neural language models with symbolic reasoning engines to generate and validate scientific hypotheses in biology.",
+      "arxivUrl": "https://arxiv.org/abs/example",
+      "codeUrl": "https://github.com/broadfire/example"
+    },
+    {
+      "id": "4",
+      "title": "Whole-Cell Modeling with Differentiable Simulation",
+      "authors": ["I. Biologist", "J. Modeler"],
+      "venue": "Nature Methods",
+      "year": 2024,
+      "area": "scientific-ml",
+      "abstract": "We introduce a fully differentiable whole-cell simulation framework that enables end-to-end learning of cellular dynamics from experimental data.",
+      "arxivUrl": "https://arxiv.org/abs/example",
+      "pdfUrl": "https://example.com/paper.pdf"
+    },
+    {
+      "id": "5",
+      "title": "Superposition and Feature Splitting in Transformer Residual Streams",
+      "authors": ["K. Analyst", "L. Interpreter"],
+      "venue": "COLM 2024",
+      "year": 2024,
+      "area": "interpretability",
+      "abstract": "We study how features are represented in transformer models, finding evidence for both superposition and feature splitting across different layers.",
+      "arxivUrl": "https://arxiv.org/abs/example"
+    },
+    {
+      "id": "6",
+      "title": "Cross-Modal Alignment Without Paired Data",
+      "authors": ["M. Engineer", "N. Developer", "O. Builder"],
+      "venue": "ACL 2024",
+      "year": 2024,
+      "area": "multimodal-llms",
+      "abstract": "We propose a method for aligning representations across modalities using only unpaired data and self-supervised objectives.",
+      "arxivUrl": "https://arxiv.org/abs/example",
+      "codeUrl": "https://github.com/broadfire/example",
+      "pdfUrl": "https://example.com/paper.pdf"
+    }
+  ]
+}

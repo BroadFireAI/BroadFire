@@ -16,7 +16,7 @@ const SphereModal: React.FC<SphereModalProps> = ({
   title,
   description,
   color,
-  children
+  children,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -59,24 +59,24 @@ const SphereModal: React.FC<SphereModalProps> = ({
       {/* Modal content */}
       <div
         ref={modalRef}
-        className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden animate-scale-in"
+        className="relative bg-white shadow-2xl max-w-lg w-full overflow-hidden animate-scale-in"
         style={{
           animationDuration: '300ms',
-          boxShadow: `0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px ${rgbColorLight}`
+          boxShadow: `0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px ${rgbColorLight}`,
         }}
       >
         {/* Gradient header accent */}
         <div
           className="h-2"
           style={{
-            background: `linear-gradient(90deg, ${rgbColor}, ${rgbColor}88, ${rgbColor})`
+            background: `linear-gradient(90deg, ${rgbColor}, ${rgbColor}88, ${rgbColor})`,
           }}
         />
 
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 group"
+          className="absolute top-4 right-4 p-2 hover:bg-gray-100 transition-colors duration-200 group"
           aria-label="Close modal"
         >
           <X className="w-5 h-5 text-gray-400 group-hover:text-gray-600" />
@@ -89,13 +89,13 @@ const SphereModal: React.FC<SphereModalProps> = ({
             className="w-16 h-16 rounded-full mb-6 flex items-center justify-center"
             style={{
               background: `linear-gradient(135deg, ${rgbColor}, ${rgbColor}88)`,
-              boxShadow: `0 10px 30px -5px ${rgbColor}66`
+              boxShadow: `0 10px 30px -5px ${rgbColor}66`,
             }}
           >
             <div
               className="w-8 h-8 rounded-full"
               style={{
-                background: `radial-gradient(circle at 30% 30%, white, ${rgbColor})`
+                background: `radial-gradient(circle at 30% 30%, white, ${rgbColor})`,
               }}
             />
           </div>

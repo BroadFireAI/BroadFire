@@ -1,0 +1,6 @@
+dist/
+node_modules/
+src/exp/
+*.md
+pnpm-lock.yaml
+package-lock.json

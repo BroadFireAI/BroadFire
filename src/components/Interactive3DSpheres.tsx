@@ -14,10 +14,7 @@ interface Interactive3DSpheresProps {
   onSphereClick?: (sphere: SphereData) => void;
 }
 
-const Interactive3DSpheres: React.FC<Interactive3DSpheresProps> = ({
-  spheres,
-  onSphereClick
-}) => {
+const Interactive3DSpheres: React.FC<Interactive3DSpheresProps> = ({ spheres, onSphereClick }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredSphere, setHoveredSphere] = useState<string | null>(null);
   const sphereMeshesRef = useRef<Map<string, THREE.Mesh>>(new Map());
@@ -34,7 +31,7 @@ const Interactive3DSpheres: React.FC<Interactive3DSpheresProps> = ({
         time: { value: 0 },
         baseColor: { value: new THREE.Vector3(...baseColor) },
         hover: { value: 0.0 },
-        lightPosition: { value: new THREE.Vector3(5, 5, 5) }
+        lightPosition: { value: new THREE.Vector3(5, 5, 5) },
       },
       vertexShader: `
         varying vec3 vNormal;
@@ -80,12 +77,12 @@ const Interactive3DSpheres: React.FC<Interactive3DSpheresProps> = ({
           return pow(1.0 - max(dot(viewDir, normal), 0.0), power);
         }
 
-        // Rainbow iridescence color shift
+        // Blue iridescence color shift
         vec3 iridescence(float angle, float time) {
-          vec3 color1 = vec3(1.0, 0.4, 0.6);  // Pink
-          vec3 color2 = vec3(0.4, 0.8, 1.0);  // Cyan
-          vec3 color3 = vec3(0.9, 0.7, 0.3);  // Gold
-          vec3 color4 = vec3(0.6, 0.4, 1.0);  // Purple
+          vec3 color1 = vec3(0.15, 0.4, 0.9);   // Deep blue
+          vec3 color2 = vec3(0.3, 0.6, 1.0);    // Medium blue
+          vec3 color3 = vec3(0.1, 0.3, 0.7);    // Navy
+          vec3 color4 = vec3(0.5, 0.7, 0.95);   // Light blue
 
           float t = angle + time * 0.3;
           float segment = mod(t, 4.0);
@@ -137,7 +134,7 @@ const Interactive3DSpheres: React.FC<Interactive3DSpheresProps> = ({
         }
       `,
       transparent: true,
-      side: THREE.FrontSide
+      side: THREE.FrontSide,
     });
   }, []);
 
@@ -161,7 +158,7 @@ const Interactive3DSpheres: React.FC<Interactive3DSpheresProps> = ({
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
-      powerPreference: 'high-performance'
+      powerPreference: 'high-performance',
     });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -242,16 +239,19 @@ const Interactive3DSpheres: React.FC<Interactive3DSpheresProps> = ({
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
 
+    // Capture ref value for cleanup
+    const currentSphereMeshes = sphereMeshesRef.current;
+
     // Cleanup
     return () => {
       cancelAnimationFrame(animationId);
       resizeObserver.disconnect();
       renderer.dispose();
       sphereGeometry.dispose();
-      sphereMeshesRef.current.forEach((mesh) => {
+      currentSphereMeshes.forEach((mesh) => {
         (mesh.material as THREE.Material).dispose();
       });
-      sphereMeshesRef.current.clear();
+      currentSphereMeshes.clear();
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
@@ -280,21 +280,24 @@ const Interactive3DSpheres: React.FC<Interactive3DSpheresProps> = ({
     }
   }, []);
 
-  const handleClick = useCallback((event: React.MouseEvent) => {
-    if (!containerRef.current || !cameraRef.current) return;
+  const handleClick = useCallback(
+    (event: React.MouseEvent) => {
+      if (!containerRef.current || !cameraRef.current) return;
 
-    const rect = containerRef.current.getBoundingClientRect();
-    mouseRef.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    mouseRef.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      const rect = containerRef.current.getBoundingClientRect();
+      mouseRef.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouseRef.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-    raycasterRef.current.setFromCamera(mouseRef.current, cameraRef.current);
-    const meshes = Array.from(sphereMeshesRef.current.values());
-    const intersects = raycasterRef.current.intersectObjects(meshes);
+      raycasterRef.current.setFromCamera(mouseRef.current, cameraRef.current);
+      const meshes = Array.from(sphereMeshesRef.current.values());
+      const intersects = raycasterRef.current.intersectObjects(meshes);
 
-    if (intersects.length > 0 && onSphereClick) {
-      onSphereClick(intersects[0].object.userData.data);
-    }
-  }, [onSphereClick]);
+      if (intersects.length > 0 && onSphereClick) {
+        onSphereClick(intersects[0].object.userData.data);
+      }
+    },
+    [onSphereClick]
+  );
 
   return (
     <div

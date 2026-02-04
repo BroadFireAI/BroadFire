@@ -1,0 +1,48 @@
+{
+  "areas": [
+    {
+      "id": "multimodal-llms",
+      "title": "Multimodal Large Language Models",
+      "description": "Developing and analyzing foundation models that integrate text, vision, audio, and other modalities for unified understanding and generation.",
+      "topics": [
+        "Vision-language models",
+        "Cross-modal alignment",
+        "Multimodal reasoning",
+        "Emergent capabilities"
+      ]
+    },
+    {
+      "id": "neurosymbolic",
+      "title": "Neuro-symbolic AI",
+      "description": "Bridging neural networks with symbolic reasoning to create systems that combine learning from data with structured knowledge and logical inference.",
+      "topics": [
+        "Neural theorem proving",
+        "Knowledge graph integration",
+        "Symbolic program synthesis",
+        "Hybrid architectures"
+      ]
+    },
+    {
+      "id": "interpretability",
+      "title": "Mechanistic Interpretability",
+      "description": "Reverse-engineering neural networks to understand the algorithms and representations they learn, enabling safer and more aligned AI systems.",
+      "topics": [
+        "Circuit discovery",
+        "Feature visualization",
+        "Activation patching",
+        "Superposition research"
+      ]
+    },
+    {
+      "id": "scientific-ml",
+      "title": "Scientific Machine Learning",
+      "description": "Applying ML to computational biology, whole-cell modeling, and other scientific domains where data-driven approaches meet mechanistic understanding.",
+      "topics": [
+        "Whole-cell models",
+        "Protein structure prediction",
+        "Drug discovery",
+        "Systems biology"
+      ]
+    }
+  ]
+}

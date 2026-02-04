@@ -11,13 +11,10 @@ const MissionShader: React.FC = () => {
 
     const gl = canvas.getContext('webgl');
     if (!gl) {
-      console.error('WebGL not supported');
       return;
     }
 
-    if (!gl.getExtension('OES_standard_derivatives')) {
-      console.warn('OES_standard_derivatives not supported');
-    }
+    gl.getExtension('OES_standard_derivatives');
 
     // --- Shader Sources ---
     const vsSource = `
@@ -145,7 +142,7 @@ const MissionShader: React.FC = () => {
 
         if(abs(distance) < 0.001){
           vec3 normal = getNormal(rPos);
-          gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) / 4.0, 0.5, 0.9)), 1.0);
+          gl_FragColor = vec4(hsv2rgb(vec3(0.58 + dot(normal, cUp) / 8.0, 0.6, 0.9)), 1.0);
         }else{
           // Make background transparent
           gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
@@ -160,7 +157,6 @@ const MissionShader: React.FC = () => {
       gl.shaderSource(shader, source);
       gl.compileShader(shader);
       if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        console.error('Shader compile error:', gl.getShaderInfoLog(shader));
         gl.deleteShader(shader);
         return null;
       }
@@ -190,16 +186,8 @@ const MissionShader: React.FC = () => {
     const attPosition = gl.getAttribLocation(program, 'position');
 
     // Quad Vertices
-    const vertices = [
-      -1.0,  1.0, 0.0,
-      1.0,  1.0, 0.0,
-      -1.0, -1.0, 0.0,
-      1.0, -1.0, 0.0,
-    ];
-    const indices = [
-      0, 2, 1,
-      1, 2, 3,
-    ];
+    const vertices = [-1.0, 1.0, 0.0, 1.0, 1.0, 0.0, -1.0, -1.0, 0.0, 1.0, -1.0, 0.0];
+    const indices = [0, 2, 1, 1, 2, 3];
 
     const vbo = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
@@ -233,12 +221,12 @@ const MissionShader: React.FC = () => {
     };
 
     const handleResize = () => {
-        if (!container || !canvas) return;
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-        canvas.width = width;
-        canvas.height = height;
-        gl.viewport(0, 0, width, height);
+      if (!container || !canvas) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      canvas.width = width;
+      canvas.height = height;
+      gl.viewport(0, 0, width, height);
     };
 
     window.addEventListener('resize', handleResize);
@@ -265,4 +253,3 @@ const MissionShader: React.FC = () => {
 };
 
 export default MissionShader;
-
