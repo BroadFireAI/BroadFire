@@ -36,6 +36,12 @@ export default [
         IntersectionObserver: 'readonly',
         Image: 'readonly',
         performance: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        HTMLButtonElement: 'readonly',
+        Node: 'readonly',
       },
     },
     plugins: {

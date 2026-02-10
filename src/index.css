@@ -56,3 +56,109 @@
     background: #a8a8a8;
   }
 }
+
+/* ── Japandi Design System CSS Custom Properties ── */
+:root {
+  --japandi-royal: #1e3a8a;
+  --japandi-royal-light: #2b4ea6;
+  --japandi-royal-dark: #152c6b;
+  --japandi-warm-white: #fdfcfa;
+  --japandi-paper: #f5f3ef;
+  --japandi-linen: #ede8e0;
+  --japandi-sand: #e2ddd5;
+  --japandi-earth: #8b7355;
+  --japandi-earth-dark: #6b5842;
+  --japandi-sage: #7a8a6e;
+  --japandi-sage-light: #95a688;
+  --japandi-terracotta: #c67b5c;
+  --japandi-terracotta-light: #d99b82;
+  --japandi-wood: #a0826d;
+  --japandi-charcoal: #2c2825;
+  --japandi-stone: #3d3733;
+  --japandi-mist: #7a7268;
+}
+
+/* ── Scroll-driven reveal animation ── */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered children */
+.reveal-stagger > .reveal-on-scroll:nth-child(1) {
+  transition-delay: 0ms;
+}
+.reveal-stagger > .reveal-on-scroll:nth-child(2) {
+  transition-delay: 120ms;
+}
+.reveal-stagger > .reveal-on-scroll:nth-child(3) {
+  transition-delay: 240ms;
+}
+.reveal-stagger > .reveal-on-scroll:nth-child(4) {
+  transition-delay: 360ms;
+}
+.reveal-stagger > .reveal-on-scroll:nth-child(5) {
+  transition-delay: 480ms;
+}
+
+/* ── Section transitions ── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--japandi-sand) 20%,
+    var(--japandi-earth) 50%,
+    var(--japandi-sand) 80%,
+    transparent 100%
+  );
+  opacity: 0.5;
+}
+
+/* ── Subtle noise texture overlay ── */
+.texture-overlay {
+  position: relative;
+}
+.texture-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* ── Scroll progress bar ── */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--japandi-royal);
+  z-index: 100;
+  transition: width 30ms linear;
+}
+
+/* ── Simple fade/slide animations (replacement for tw-animate-css) ── */
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInSlideUp 0.3s ease-out forwards;
+}

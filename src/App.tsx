@@ -7,6 +7,7 @@ import Research from './pages/Research';
 import Publications from './pages/Publications';
 import Treatises from './pages/Treatises';
 import TreatisePost from './pages/TreatisePost';
+import WorldModels from './pages/WorldModels';
 
 const WaterWaveBackground = lazy(() => import('./components/WaterWaveBackground'));
 
@@ -35,6 +36,7 @@ function App() {
             <Route path="/publications" element={<Publications />} />
             <Route path="/treatises" element={<Treatises />} />
             <Route path="/treatises/:slug" element={<TreatisePost />} />
+            <Route path="/world-models" element={<WorldModels />} />
           </Routes>
 
           {/* Footer with Water Wave Shader Background */}
