@@ -118,7 +118,7 @@ const About: React.FC = () => {
                     <Github className="w-5 h-5 text-gray-600 group-hover:text-blue-600" />
                   </a>
                   <a
-                    href="https://linkedin.com/in/divyansh-goyal"
+                    href="https://www.linkedin.com/in/divyansh-goyal-34654b200/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-3 bg-white shadow-sm border border-gray-100 hover:shadow-md hover:border-blue-200 transition-all duration-200 group"
