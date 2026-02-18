@@ -1,6 +1,6 @@
 # BroadFire AI Research Lab
 
-A high-performance, visually striking landing page for a research laboratory specializing in Embodied Agents, Spatial Intelligence, Mechanistic Interpretability, and Edge AI. This project showcases advanced WebGL shader programming, interactive 3D graphics, and modern React architecture.
+A high-performance, visually striking landing page for a research laboratory specializing in Embodied Agents, Spatial Intelligence, Mechanistic Interpretability, Scientific Machine Learning, Human Centered AI and Mixed Reality, and Edge AI. This project showcases advanced WebGL shader programming, interactive 3D graphics, and modern React architecture.
 
 ## Table of Contents
 
@@ -13,7 +13,8 @@ A high-performance, visually striking landing page for a research laboratory spe
 7. [Project Structure](#project-structure)
 8. [Shader Documentation](#shader-documentation)
 9. [Performance Optimizations](#performance-optimizations)
-10. [Browser Support](#browser-support)
+10. [Research Areas](#research-areas)
+11. [Browser Support](#browser-support)
 
 ---
 
@@ -278,6 +279,36 @@ Located in `MagneticWaveBackground.tsx`, this shader creates the interactive bac
 - useCallback hooks prevent unnecessary re-renders
 - useRef for mutable values that do not trigger renders
 - Proper cleanup in useEffect return functions
+
+---
+
+## Research Areas
+
+### Core Domains
+
+The site showcases the following research areas, each with dedicated interactive sections:
+
+- **Embodied Physical Agents** - Building agents that perceive and act in physical environments
+- **Spatial Intelligence** - GPU-accelerated medical imaging, 3D segmentation, and volumetric analysis
+- **Mechanistic Interpretability** - Understanding transformer internals through feature visualization and circuit analysis
+- **AI Red Teaming** - Adversarial evaluation and safety testing of AI systems
+- **Edge AI and HPC** - Deploying models on resource-constrained hardware with GPU kernel optimization
+
+### Scientific Machine Learning
+
+Research at the intersection of scientific computing and machine learning, focusing on computational biology, whole-cell modeling, and differentiable simulation. Built on the Julia SciML ecosystem (DifferentialEquations.jl, Flux.jl) alongside frameworks like PyTorch and JAX. Collaborators and inspiration include [Pumas AI](https://pumas.ai) for pharmaceutical modeling and quantitative systems pharmacology.
+
+### Human Centered AI and Mixed Reality
+
+Research exploring the intersection of human-centered design, immersive computing, and AI-driven interaction in mixed reality environments. This domain draws inspiration from:
+
+- **Georgia Tech Polo Data Science Lab** - Pioneering work in human-centered data science and interactive analytics
+- **Cocolinux** - Collaborative computing and human-AI interaction research
+- **Hash3D** - Real-time 3D hashing and spatial computing techniques for immersive environments
+- **Neurosama** - AI-driven virtual presence and real-time character interaction systems
+- **LukeRoss VR** - Pushing boundaries of VR adaptation and stereoscopic 3D rendering for immersive experiences
+
+Focus areas include spatial user interfaces, embodied interaction in XR, AI-assisted content creation for virtual worlds, and human-in-the-loop systems for mixed reality applications.
 
 ---
 
